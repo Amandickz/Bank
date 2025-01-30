@@ -77,10 +77,10 @@ public class Main {
                         digitedCpf = scanner.next();
                         cpf = cpfVerification.convertionCPF(digitedCpf);
                         if (cpf != null) {
-                            if (db.foundCPF(cpf)) {
+                            if (!db.foundCPF(cpf)) {
                                 openAccount(scanner, cpf);
                             } else {
-                                System.out.println("CPF has a account. Please, make a login.");
+                                System.out.println("CPF has a account. Please, make a login.\n");
                             }
                         }
                         break;

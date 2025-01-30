@@ -305,7 +305,7 @@ public class DBManipulation {
 
             rs = stmt.executeQuery("select * from bankcustomer where cpf = '" + cpf + "'");
 
-            if (rs != null){
+            if (rs.next()){
                 return true;
             }
 
