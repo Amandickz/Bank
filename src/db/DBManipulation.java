@@ -538,6 +538,31 @@ public class DBManipulation {
         return 0;
     }
 
+    public boolean returnAccountList() {
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
 
+        try{
+            conn = DB.getConnection();
+
+            stmt = conn.createStatement();
+
+            rs = stmt.executeQuery("select * from account");
+
+            while (rs.next()) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+            DB.closeStatement(stmt);
+            DB.closeConnection();
+        }
+
+        return false;
+    }
 
 }

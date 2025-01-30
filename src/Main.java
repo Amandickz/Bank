@@ -43,37 +43,46 @@ public class Main {
 
                 switch (option) {
                     case 1:
-                        System.out.println("\nLogin Account");
-                        System.out.print("CPF: ");
-                        digitedCpf = scanner.next();
-                        cpf = cpfVerification.convertionCPF(digitedCpf);
-                        BankCustomer bankCustomer = db.returnBankCustomerCPF(cpf);
-                        if (bankCustomer == null) {
-                            System.out.println("CPF does not account. Please open your account first.");
-                        } else {
-                            System.out.print("Password: ");
-                            String password = scanner.next();
-                            Account account = db.returnAccount(bankCustomer);
-                            if (account == null) {
-                                System.out.println("Account doesn't localizated. Please try again.");
-                            } else {
-                                if (account.getPassword().equals(password)) {
-                                    bankMenu(scanner, account);
+                        if (db.returnAccountList()){
+                            System.out.println("\nLogin Account");
+                            System.out.print("CPF: ");
+                            digitedCpf = scanner.next();
+                            cpf = cpfVerification.convertionCPF(digitedCpf);
+                            if(cpf != null){
+                                BankCustomer bankCustomer = db.returnBankCustomerCPF(cpf);
+                                if (bankCustomer == null) {
+                                    System.out.println("CPF does not account. Please open your account first.\n");
+                                } else {
+                                    System.out.print("Password: ");
+                                    String password = scanner.next();
+                                    Account account = db.returnAccount(bankCustomer);
+                                    if (account == null) {
+                                        System.out.println("Account doesn't localizated. Please try again.");
+                                    } else {
+                                        if (account.getPassword().equals(password)) {
+                                            bankMenu(scanner, account);
+                                        }
+                                    }
                                 }
                             }
+                        } else {
+                            System.out.println("\nAny account found!\n");
                         }
-                        return;
+                        break;
                     case 2:
+                        System.out.println("\nAccount Opening");
                         System.out.print("Digit your CPF: ");
                         digitedCpf = scanner.next();
                         cpf = cpfVerification.convertionCPF(digitedCpf);
-                        if (db.foundCPF(cpf)) {
-                            openAccount(scanner, cpf);
-                            System.out.println("Account Opening.");
-                        } else {
-                            System.out.println("CPF has a account. Please, make a login.");
+                        if (cpf != null) {
+                            if (db.foundCPF(cpf)) {
+                                openAccount(scanner, cpf);
+                                System.out.println("Account Opening.");
+                            } else {
+                                System.out.println("CPF has a account. Please, make a login.");
+                            }
                         }
-                        return;
+                        break;
                     case 0:
                         running = false;
                         break;
@@ -82,7 +91,7 @@ public class Main {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("You digit a letter! Please try again.");
-                return;
+                break;
             }
         }
     }
