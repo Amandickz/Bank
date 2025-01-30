@@ -61,6 +61,7 @@ public class Main {
                                     } else {
                                         if (account.getPassword().equals(password)) {
                                             bankMenu(scanner, account);
+                                            return;
                                         } else {
                                             System.out.println("Password does not match. Please try again.\n");
                                         }
@@ -253,7 +254,7 @@ public class Main {
                         System.out.println("Invalid option! Please try again.");
                 }
             } catch (InputMismatchException e){
-                System.out.println("You digit a letter! Please try again.");
+                System.out.println("You digit a letter! Please try again.\n");
                 return;
             }
         }
