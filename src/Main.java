@@ -79,7 +79,6 @@ public class Main {
                         if (cpf != null) {
                             if (db.foundCPF(cpf)) {
                                 openAccount(scanner, cpf);
-                                System.out.println("Account Opening.");
                             } else {
                                 System.out.println("CPF has a account. Please, make a login.");
                             }
@@ -275,7 +274,7 @@ public class Main {
         String digitedPhone = scanner.next();
 
         if(!phoneVerification.verificationValidFormat(digitedPhone)){
-            System.out.println("Invalid phone number! Please try again.");
+            System.out.println("Invalid phone number! Please try again.\n");
         } else {
             String phone = phoneVerification.formatPhone(digitedPhone);
             System.out.print("Birthday Date (dd/MM/yyyy): ");
@@ -322,6 +321,8 @@ public class Main {
 
                 //Inserção do banco
                 int bankId = dbManipulation.insertBank(account);
+
+                System.out.println("Account Opening.");
             } else {
                 System.out.println("Please, check your date birthday and try again.");
             }
