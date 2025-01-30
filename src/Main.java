@@ -61,6 +61,8 @@ public class Main {
                                     } else {
                                         if (account.getPassword().equals(password)) {
                                             bankMenu(scanner, account);
+                                        } else {
+                                            System.out.println("Password does not match. Please try again.\n");
                                         }
                                     }
                                 }
