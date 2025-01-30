@@ -198,7 +198,7 @@ public class Main {
                             } else {
                                 System.out.println("\nAccount not found. Please try again.");
                             }
-                        } else {
+                        } else if (optionTransfer == 2) {
                             System.out.print("Enter CPF to transfer: ");
                             String cpf = scanner.next();
 
@@ -210,7 +210,7 @@ public class Main {
 
                                 if (bank.getAccount().getBalance() >= amount) {
                                     System.out.print("Confirm you transfer with \n" +
-                                            cpf + " of value R$ " + amount + "\n(y/n) ");
+                                            cpfConverted + " of value R$ " + amount + "\n(y/n) ");
                                     char confirm = scanner.next().charAt(0);
                                     if (confirm == 'y') {
                                         if (bank.getAccount().externalTransfer(bank, amount)) {
@@ -223,10 +223,14 @@ public class Main {
                                             System.out.println("\nSomenthing wrong. Please try again.");
                                         }
                                     }
+                                } else {
+                                    System.out.println("Your balance is not enough. Please try again.");
                                 }
                             } else {
                                 System.out.println("CPF was incorrect. Please try again.");
                             }
+                        } else {
+                            System.out.println("Invalid option! Please try again.");
                         }
                         break;
                     case 5:
