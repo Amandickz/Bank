@@ -5,7 +5,6 @@ public class PhoneVerification {
     public boolean verificationValidFormat(String phone){
 
         if(phone.length() < 10 || phone.length() > 12){
-            System.out.println("Invalid phone number! Try again.");
             return false;
         }
 

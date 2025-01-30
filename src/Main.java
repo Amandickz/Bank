@@ -43,37 +43,48 @@ public class Main {
 
                 switch (option) {
                     case 1:
-                        System.out.println("\nLogin Account");
-                        System.out.print("CPF: ");
-                        digitedCpf = scanner.next();
-                        cpf = cpfVerification.convertionCPF(digitedCpf);
-                        BankCustomer bankCustomer = db.returnBankCustomerCPF(cpf);
-                        if (bankCustomer == null) {
-                            System.out.println("CPF does not account. Please open your account first.");
-                        } else {
-                            System.out.print("Password: ");
-                            String password = scanner.next();
-                            Account account = db.returnAccount(bankCustomer);
-                            if (account == null) {
-                                System.out.println("Account doesn't localizated. Please try again.");
-                            } else {
-                                if (account.getPassword().equals(password)) {
-                                    bankMenu(scanner, account);
+                        if (db.returnAccountList()){
+                            System.out.println("\nLogin Account");
+                            System.out.print("CPF: ");
+                            digitedCpf = scanner.next();
+                            cpf = cpfVerification.convertionCPF(digitedCpf);
+                            if(cpf != null){
+                                BankCustomer bankCustomer = db.returnBankCustomerCPF(cpf);
+                                if (bankCustomer == null) {
+                                    System.out.println("CPF does not account. Please open your account first.\n");
+                                } else {
+                                    System.out.print("Password: ");
+                                    String password = scanner.next();
+                                    Account account = db.returnAccount(bankCustomer);
+                                    if (account == null) {
+                                        System.out.println("Account doesn't localizated. Please try again.");
+                                    } else {
+                                        if (account.getPassword().equals(password)) {
+                                            bankMenu(scanner, account);
+                                            return;
+                                        } else {
+                                            System.out.println("Password does not match. Please try again.\n");
+                                        }
+                                    }
                                 }
                             }
+                        } else {
+                            System.out.println("\nAny account found!\n");
                         }
-                        return;
+                        break;
                     case 2:
+                        System.out.println("\nAccount Opening");
                         System.out.print("Digit your CPF: ");
                         digitedCpf = scanner.next();
                         cpf = cpfVerification.convertionCPF(digitedCpf);
-                        if (db.foundCPF(cpf)) {
-                            openAccount(scanner, cpf);
-                            System.out.println("Account Opening.");
-                        } else {
-                            System.out.println("CPF has a account. Please, make a login.");
+                        if (cpf != null) {
+                            if (!db.foundCPF(cpf)) {
+                                openAccount(scanner, cpf);
+                            } else {
+                                System.out.println("CPF has a account. Please, make a login.\n");
+                            }
                         }
-                        return;
+                        break;
                     case 0:
                         running = false;
                         break;
@@ -82,7 +93,7 @@ public class Main {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("You digit a letter! Please try again.");
-                return;
+                break;
             }
         }
     }
@@ -187,7 +198,7 @@ public class Main {
                             } else {
                                 System.out.println("\nAccount not found. Please try again.");
                             }
-                        } else {
+                        } else if (optionTransfer == 2) {
                             System.out.print("Enter CPF to transfer: ");
                             String cpf = scanner.next();
 
@@ -199,7 +210,7 @@ public class Main {
 
                                 if (bank.getAccount().getBalance() >= amount) {
                                     System.out.print("Confirm you transfer with \n" +
-                                            cpf + " of value R$ " + amount + "\n(y/n) ");
+                                            cpfConverted + " of value R$ " + amount + "\n(y/n) ");
                                     char confirm = scanner.next().charAt(0);
                                     if (confirm == 'y') {
                                         if (bank.getAccount().externalTransfer(bank, amount)) {
@@ -212,10 +223,14 @@ public class Main {
                                             System.out.println("\nSomenthing wrong. Please try again.");
                                         }
                                     }
+                                } else {
+                                    System.out.println("Your balance is not enough. Please try again.");
                                 }
                             } else {
                                 System.out.println("CPF was incorrect. Please try again.");
                             }
+                        } else {
+                            System.out.println("Invalid option! Please try again.");
                         }
                         break;
                     case 5:
@@ -243,7 +258,7 @@ public class Main {
                         System.out.println("Invalid option! Please try again.");
                 }
             } catch (InputMismatchException e){
-                System.out.println("You digit a letter! Please try again.");
+                System.out.println("You digit a letter! Please try again.\n");
                 return;
             }
         }
@@ -264,7 +279,7 @@ public class Main {
         String digitedPhone = scanner.next();
 
         if(!phoneVerification.verificationValidFormat(digitedPhone)){
-            System.out.println("Invalid phone number! Please try again.");
+            System.out.println("Invalid phone number! Please try again.\n");
         } else {
             String phone = phoneVerification.formatPhone(digitedPhone);
             System.out.print("Birthday Date (dd/MM/yyyy): ");
@@ -311,6 +326,8 @@ public class Main {
 
                 //Inserção do banco
                 int bankId = dbManipulation.insertBank(account);
+
+                System.out.println("Account Opening.");
             } else {
                 System.out.println("Please, check your date birthday and try again.");
             }
